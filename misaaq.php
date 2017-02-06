@@ -27,13 +27,26 @@ function misaaq_update_check() {
     }
 }
 function activate_misaaq()
-{
-  misaaq_create_table();
-}
-function deactivate_misaaq(){}
+{  misaaq_create_table();  }
+function deactivate_misaaq()
+{  misaaq_drop_table();  }
 register_activation_hook(__FILE__,'activate_misaaq');
 add_action( 'plugins_loaded', 'misaaq_update_check' );
 register_deactivation_hook(__FILE__,'deactivate_misaaq');
+
+add_action('admin_enqueue_scripts', 'register_misaaq_admin_script');
+function register_misaaq_admin_script(){
+	wp_register_style('persian_datepicker_style', plugin_dir_url( __FILE__ ).('assets/css/persian-datepicker-0.4.5.css'));
+    wp_enqueue_style('persian_datepicker_style');
+	// wp_register_style('bootstrap_min_style', plugin_dir_url( __FILE__ ).('assets/css/bootstrap.min.css'));
+    // wp_enqueue_style('bootstrap_min_style');
+	// wp_deregister_script( 'jquery' );
+	// wp_enqueue_script('jquery', false, array(), false, false);
+	wp_enqueue_script('jquerys_2_js', plugin_dir_url( __FILE__ ).('assets/js/jquery.js'));
+	wp_enqueue_script('bootstrap_min_js', plugin_dir_url( __FILE__ ).('assets/js/bootstrap.min.js'));
+	wp_enqueue_script('persian_date_js', plugin_dir_url( __FILE__ ).('assets/js/persian-date.js'),array(), null, true);
+	wp_enqueue_script('persian_datepicker_js', plugin_dir_url( __FILE__ ).('assets/js/persian-datepicker-0.4.5.js'),array ( 'persian_date_js' ));
+}
 
 if ( is_admin() ){
   // if(!function_exists('wp_get_current_user'))
